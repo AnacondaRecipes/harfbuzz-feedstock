@@ -30,17 +30,11 @@ requirements:
     - python
     - gobject-introspection >=1.51,<2.0a0
   host:
-    - cairo 1.14.*
-    - glib 2.55.*
-    - freetype 2.8.1
-    - icu 58.*
-    - graphite2 1.3.*
-  run:
-    - cairo 1.14.*
-    - glib 2.55.*
-    - freetype 2.8.1
-    - icu 58.*
-    - graphite2 1.3.*
+    - freetype
+    - glib
+    - icu
+    - cairo
+    - graphite2
 
 test:
   commands:
