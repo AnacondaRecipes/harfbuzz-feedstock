@@ -20,13 +20,14 @@ fi
 autoreconf --force --install
 chmod +x configure
 
-./configure --prefix=$PREFIX \
+./configure --prefix=${PREFIX} \
+            --host=${HOST} \
             --disable-gtk-doc \
             --enable-static \
             --with-graphite2=yes \
             --with-gobject=yes
 
-make
+make -j${CPU_COUNT}
 # FIXME
 # OS X:
 # FAIL: test-ot-tag
