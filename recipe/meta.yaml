@@ -28,13 +28,12 @@ requirements:
     - cairo 1.14.*
     - glib >=2.53.5,<3.0a0
     - freetype 2.7|2.7.*
-    - icu 58.*
+    - icu
     - graphite2 1.3.*
   run:
     - cairo 1.14.*
     - glib >=2.53.5,<3.0a0
     - freetype 2.7|2.7.*
-    - icu 58.*
     - graphite2 1.3.*
 
 test:
