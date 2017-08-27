@@ -27,7 +27,7 @@ chmod +x configure
             --with-graphite2=yes \
             --with-gobject=yes
 
-make -j${CPU_COUNT}
+make -j${CPU_COUNT} ${VERBOSE_AT}
 # FIXME
 # OS X:
 # FAIL: test-ot-tag
