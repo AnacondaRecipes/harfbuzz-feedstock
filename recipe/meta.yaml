@@ -1,6 +1,6 @@
 {% set name = "harfbuzz" %}
-{% set version = "1.4.3" %}
-{% set sha256 = "838c17400a88a3a451eb401573ef94cdd50919730d98255547c459fef1d85321" %}
+{% set version = "1.5.0" %}
+{% set sha256 = "c088ec363be8d03f7708feb76dd22d5f102678e67d6ce63b02496ca0beb64ac1" %}
 
 package:
   name: {{ name }}
@@ -15,6 +15,10 @@ build:
   number: 0
   skip: true  # [py3k or win]
   detect_binary_files_with_prefix: true
+  run_exports:
+    # removes symbols rarely (last time in 2014).
+    #    https://abi-laboratory.pro/tracker/timeline/harfbuzz/
+    - {{ pin_subpackage('harfbuzz', max_pin='x') }}
 
 requirements:
   build:
