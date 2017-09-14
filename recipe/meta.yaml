@@ -39,11 +39,11 @@ requirements:
     - icu
     - cairo 1.14.*
     - graphite2 1.3.*
-    - libxcb
+    - libxcb                             # [linux]
   run:
     - cairo 1.14.*
     - graphite2 1.3.*
-    - libxcb
+    - libxcb                             # [linux]
 
 test:
   commands:
