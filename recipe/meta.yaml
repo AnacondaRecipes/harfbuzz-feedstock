@@ -1,6 +1,6 @@
 {% set name = "harfbuzz" %}
-{% set version = "1.5.0" %}
-{% set sha256 = "c088ec363be8d03f7708feb76dd22d5f102678e67d6ce63b02496ca0beb64ac1" %}
+{% set version = "1.7.4" %}
+{% set sha256 = "b5d6ac8415f97f3540d73f3f91c41c5c10f8a4d76350f11a7184062aae88ac0b" %}
 
 package:
   name: {{ name }}
@@ -14,11 +14,10 @@ source:
 build:
   number: 0
   skip: true  # [py3k or win]
-  detect_binary_files_with_prefix: true
   run_exports:
     # removes symbols rarely (last time in 2014).
     #    https://abi-laboratory.pro/tracker/timeline/harfbuzz/
-    - {{ pin_subpackage('harfbuzz', max_pin='x') }}
+    - {{ pin_subpackage('harfbuzz') }}
 
 requirements:
   build:
@@ -37,12 +36,8 @@ requirements:
     - freetype
     - glib
     - icu
-    - cairo 1.14.*
-    - graphite2 1.3.*
-    - libxcb                             # [linux]
-  run:
-    - cairo 1.14.*
-    - graphite2 1.3.*
+    - cairo
+    - graphite2
     - libxcb                             # [linux]
 
 test:
