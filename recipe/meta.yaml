@@ -13,7 +13,6 @@ source:
 build:
   number: 0
   skip: true  # [py3k or win]
-  detect_binary_files_with_prefix: true
   run_exports:
     # removes symbols rarely (last time in 2014).
     #    https://abi-laboratory.pro/tracker/timeline/harfbuzz/
