@@ -2,14 +2,6 @@
 
 set -e
 
-if [ $(uname) == Darwin ]; then
-  export CC=clang
-  export CXX=clang++
-  export MACOSX_DEPLOYMENT_TARGET="10.9"
-  export CXXFLAGS="-stdlib=libc++ $CXXFLAGS"
-  export LDFLAGS="$LDFLAGS -Wl,-rpath,$PREFIX/lib"
-fi
-
 # CircleCI seems to have some weird issue with harfbuzz tarballs. The files
 # come out with modification times such that the build scripts want to rerun
 # automake, etc.; we need to run it ourselves since we don't have the precise
@@ -17,10 +9,10 @@ fi
 # without its execute bit set. In a Docker container running locally, these
 # problems don't occur.
 
-autoreconf --force --install
+autoreconf -vfi
 chmod +x configure
 
-./configure --prefix=${PREFIX} \
+./configure --prefix="${PREFIX}" \
             --host=${HOST} \
             --disable-gtk-doc \
             --enable-static \
@@ -43,6 +35,6 @@ make -j${CPU_COUNT} ${VERBOSE_AT}
 # make check
 make install
 
-pushd $PREFIX
-rm -rf share/gtk-doc
+pushd "${PREFIX}"
+  rm -rf share/gtk-doc
 popd

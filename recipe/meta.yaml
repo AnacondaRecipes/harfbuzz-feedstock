@@ -11,8 +11,7 @@ source:
   sha256: {{ sha256 }}
 
 build:
-  number: 1
-  skip: true  # [py3k or win]
+  number: 3
   run_exports:
     # removes symbols rarely (last time in 2014).
     #    https://abi-laboratory.pro/tracker/timeline/harfbuzz/
@@ -30,7 +29,6 @@ requirements:
     - automake
     - libtool
     - pkg-config
-    - python
     - gobject-introspection >=1.51,<2.0a0
   host:
     - freetype
@@ -54,8 +52,6 @@ test:
     - test -f $PREFIX/include/harfbuzz/hb-ft.h  # [not win]
     # CLI tests.
     - hb-view --version  # [linux]
-    - conda inspect linkages -p $PREFIX $PKG_NAME  # [not win]
-    - conda inspect objects -p $PREFIX $PKG_NAME  # [osx]
 
 about:
   home: http://www.freedesktop.org/wiki/Software/HarfBuzz/
