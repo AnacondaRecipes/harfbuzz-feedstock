@@ -2,6 +2,11 @@
 
 set -e
 
+# Cf. https://github.com/conda-forge/staged-recipes/issues/673, we're in the
+# process of excising Libtool files from our packages. Existing ones can break
+# the build while this happens.
+find $PREFIX -name '*.la' -delete
+
 # CircleCI seems to have some weird issue with harfbuzz tarballs. The files
 # come out with modification times such that the build scripts want to rerun
 # automake, etc.; we need to run it ourselves since we don't have the precise
