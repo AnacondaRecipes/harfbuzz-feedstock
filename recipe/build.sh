@@ -14,15 +14,29 @@ find $PREFIX -name '*.la' -delete
 # without its execute bit set. In a Docker container running locally, these
 # problems don't occur.
 
-autoreconf -vfi
-chmod +x configure
+# Anaconda recipe maintainers: Do *NOT* run `autoreconf` as that breaks
+# configure's ability to properly configure gobject introspection.
+#autoreconf -vfi
+#chmod +x configure
+
+declare -a configure_extra_opts
+case "${target_platform}" in
+    linux-*)
+        # Needed for libxcb when using CDT X11 packages
+        export LDFLAGS="${LDFLAGS} -Wl,-rpath-link,${PREFIX}/lib"
+        ;;
+    osx-64)
+        configure_extra_opts+=(--with-coretext=yes)
+        ;;
+esac
 
 ./configure --prefix="${PREFIX}" \
             --host=${HOST} \
             --disable-gtk-doc \
             --enable-static \
             --with-graphite2=yes \
-            --with-gobject=yes
+            --with-gobject=yes \
+            ${configure_extra_opts[@]}
 
 make -j${CPU_COUNT} ${VERBOSE_AT}
 # FIXME

@@ -10,7 +10,7 @@ source:
   sha256: b470eff9dd5b596edf078596b46a1f83c179449f051a469430afc15869db336f
 
 build:
-  number: 0
+  number: 1
   skip: True  # [win]
   run_exports:
     # removes symbols rarely (last time in 2014).
@@ -29,10 +29,10 @@ requirements:
     - automake
     - libtool
     - pkg-config
-    - gobject-introspection >=1.51,<2.0a0
   host:
     - freetype
     - glib
+    - gobject-introspection >=1.51,<2.0a0
     - icu
     - cairo
     - graphite2
@@ -50,6 +50,7 @@ test:
     - test -f $PREFIX/lib/{{ lib }}.so  # [linux]
     {% endfor %}
     - test -f $PREFIX/include/harfbuzz/hb-ft.h  # [not win]
+    - test -f $PREFIX/share/gir-1.0/HarfBuzz-0.0.gir  # [not win]
     # CLI tests.
     - hb-view --version  # [linux]
 
