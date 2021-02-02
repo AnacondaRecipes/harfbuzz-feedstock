@@ -1,5 +1,5 @@
 {% set name = "harfbuzz" %}
-{% set version = "2.4.0" %}
+{% set version = "2.7.4" %}
 
 package:
   name: {{ name }}
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://www.freedesktop.org/software/{{ name }}/release/{{ name }}-{{ version }}.tar.bz2
-  sha256: b470eff9dd5b596edf078596b46a1f83c179449f051a469430afc15869db336f
+  sha256: 1316959c13d70d14443c68510129432a1e32f5e01a3526dec11b7834978809cb
 
 build:
   number: 1
