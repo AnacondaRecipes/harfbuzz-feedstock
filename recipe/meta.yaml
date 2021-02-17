@@ -6,8 +6,8 @@ package:
   version: {{ version }}
 
 source:
-  url: https://www.freedesktop.org/software/{{ name }}/release/{{ name }}-{{ version }}.tar.bz2
-  sha256: 1316959c13d70d14443c68510129432a1e32f5e01a3526dec11b7834978809cb
+  url: https://github.com/harfbuzz/{{ name }}/archive/{{ version }}.tar.gz
+  sha256: daff8a4003ac420a8550760ed303ce33b310c8ea17b7f15b307d1969cabcebcb
 
 build:
   number: 1
