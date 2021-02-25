@@ -25,6 +25,7 @@ requirements:
     - {{ cdt('libxext-devel') }}         # [linux]
     - {{ cdt('libx11-devel') }}          # [linux]
     - {{ cdt('libxrender-devel') }}      # [linux]
+    - {{ cdt('xorg-x11-proto-devel') }}  # [linux and s390x]
     - make
     - automake
     - libtool
@@ -36,7 +37,7 @@ requirements:
     - icu
     - cairo
     - graphite2
-    - libxcb                             # [linux]
+    - libxcb                             # [linux and not s390x]
 
 test:
   commands:

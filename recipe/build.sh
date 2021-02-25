@@ -34,6 +34,7 @@ esac
             --host=${HOST} \
             --disable-gtk-doc \
             --enable-static \
+            --with-cairo=yes \
             --with-graphite2=yes \
             --with-gobject=yes \
             ${configure_extra_opts[@]}
