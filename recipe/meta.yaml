@@ -1,16 +1,17 @@
 {% set name = "harfbuzz" %}
-{% set version = "2.4.0" %}
+{% set version = "2.7.4" %}
+{% set sha256 = "daff8a4003ac420a8550760ed303ce33b310c8ea17b7f15b307d1969cabcebcb" %}
 
 package:
   name: {{ name }}
   version: {{ version }}
 
 source:
-  url: https://www.freedesktop.org/software/{{ name }}/release/{{ name }}-{{ version }}.tar.bz2
-  sha256: b470eff9dd5b596edf078596b46a1f83c179449f051a469430afc15869db336f
+  url: https://github.com/harfbuzz/harfbuzz/archive/{{ version }}.tar.gz
+  sha256: {{ sha256 }}
 
 build:
-  number: 1
+  number: 0
   skip: True  # [win]
   run_exports:
     # removes symbols rarely (last time in 2014).
@@ -25,19 +26,17 @@ requirements:
     - {{ cdt('libxext-devel') }}         # [linux]
     - {{ cdt('libx11-devel') }}          # [linux]
     - {{ cdt('libxrender-devel') }}      # [linux]
-    - {{ cdt('xorg-x11-proto-devel') }}  # [linux and s390x]
-    - make
-    - automake
-    - libtool
+    - {{ cdt('xorg-x11-proto-devel') }}  # [linux and s390x]; needed for cairo support
+    - gobject-introspection              # [not win]
+    - meson
+    - ninja
     - pkg-config
   host:
+    - cairo
     - freetype
     - glib
-    - gobject-introspection >=1.51,<2.0a0
     - icu
-    - cairo
     - graphite2
-    - libxcb                             # [linux and not s390x]
 
 test:
   commands:
