@@ -58,6 +58,7 @@ about:
   home: http://www.freedesktop.org/wiki/Software/HarfBuzz/
   license: MIT
   license_file: COPYING
+  license_family: MIT
   summary: 'An OpenType text shaping engine.'
   description: |
     HarfBuzz is a text shaping library. New Harbuzz targets various font
