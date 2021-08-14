@@ -24,7 +24,7 @@ case "${target_platform}" in
         # Needed for libxcb when using CDT X11 packages
         #export LDFLAGS="${LDFLAGS} -Wl,-rpath-link,${PREFIX}/lib"
         ;;
-    osx-64)
+    osx-*)
         meson_extra_opts+=(-Dcoretext=auto)
         ;;
 esac
