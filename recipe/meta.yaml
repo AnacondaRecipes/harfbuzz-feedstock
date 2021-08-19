@@ -31,10 +31,16 @@ requirements:
     - meson
     - ninja
     - pkg-config
+    - pthread-stubs
   host:
     - cairo
     - freetype
     - glib
+    - icu
+    - graphite2
+  run:
+    - cairo
+    - freetype
     - icu
     - graphite2
 
