@@ -1,6 +1,6 @@
 {% set name = "harfbuzz" %}
-{% set version = "2.8.1" %}
-{% set sha256 = "b3f17394c5bccee456172b2b30ddec0bb87e9c5df38b4559a973d14ccd04509d" %}
+{% set version = "2.9.0" %}
+{% set sha256 = "bf5d5bad69ee44ff1dd08800c58cb433e9b3bf4dad5d7c6f1dec5d1cf0249d04" %}
 
 package:
   name: {{ name }}
@@ -31,10 +31,16 @@ requirements:
     - meson
     - ninja
     - pkg-config
+    - pthread-stubs
   host:
     - cairo
     - freetype
     - glib
+    - icu
+    - graphite2
+  run:
+    - cairo
+    - freetype
     - icu
     - graphite2
 
