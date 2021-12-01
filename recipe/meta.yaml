@@ -38,6 +38,11 @@ requirements:
     - glib
     - icu
     - graphite2
+  run:
+    - cairo
+    - freetype
+    - icu
+    - graphite2
 
 test:
   commands:
