@@ -17,6 +17,9 @@ build:
     # removes symbols rarely (last time in 2014).
     #    https://abi-laboratory.pro/tracker/timeline/harfbuzz/
     - {{ pin_subpackage('harfbuzz') }}
+  missing_dso_whitelist:
+    - $RPATH/libm.so.6
+    - $RPATH/libc.so.6
 
 requirements:
   build:
