@@ -31,6 +31,7 @@ requirements:
     - meson
     - ninja
     - pkg-config
+    - pthread-stubs
   host:
     - cairo
     - freetype
@@ -59,7 +60,7 @@ about:
   license: MIT
   license_file: COPYING
   license_family: MIT
-  summary: 'An OpenType text shaping engine.'
+  summary: An OpenType text shaping engine.
   description: |
     HarfBuzz is a text shaping library. New Harbuzz targets various font
     technologies while Old HarfBuzz targets only OpenType fonts.
