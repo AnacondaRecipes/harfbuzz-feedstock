@@ -31,7 +31,7 @@ requirements:
     - {{ cdt('libxext-devel') }}         # [linux]
     - {{ cdt('libx11-devel') }}          # [linux]
     - {{ cdt('libxrender-devel') }}      # [linux]
-    - {{ cdt('xorg-x11-proto-devel') }}  # [linux and s390x]; needed for cairo support
+    - {{ cdt('xorg-x11-proto-devel') }}  # [linux and (s390x or ppc4le or x86_64)]; needed for cairo support
     - gobject-introspection
     - meson
     - ninja-base
