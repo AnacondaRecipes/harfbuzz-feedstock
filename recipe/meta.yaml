@@ -16,6 +16,8 @@ build:
     # removes symbols rarely (last time in 2014).
     #    https://abi-laboratory.pro/tracker/timeline/harfbuzz/
     - {{ pin_subpackage('harfbuzz') }}
+  ignore_run_exports:
+    - pixman
   missing_dso_whitelist:      # [linux]
     - $RPATH/libm.so.6        # [linux]
     - $RPATH/libc.so.6        # [linux]
