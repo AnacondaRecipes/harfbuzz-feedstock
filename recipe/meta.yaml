@@ -36,13 +36,13 @@ requirements:
     - pkg-config
     - pthread-stubs
   host:
-    - cairo
+    - cairo                              # [not win]
     - freetype
     - glib
     - icu
     - graphite2
   run:
-    - cairo
+    - cairo                              # [not win]
     - freetype
     - icu
     - graphite2
