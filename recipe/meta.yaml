@@ -1,6 +1,6 @@
 {% set name = "harfbuzz" %}
-{% set version = "3.1.2" %}
-{% set sha256 = "c27d2640e70e95bdbc2fbeca2f9cc212ee583da1149c9f6dacf1316217652e56" %}
+{% set version = "4.3.0" %}
+{% set sha256 = "32184860ddc0b264ff95010e1c64e596bd746fe4c2e34014a1185340cdddeba6" %}
 
 package:
   name: {{ name }}
@@ -12,7 +12,6 @@ source:
 
 build:
   number: 0
-  skip: True  # [win]
   run_exports:
     # removes symbols rarely (last time in 2014).
     #    https://abi-laboratory.pro/tracker/timeline/harfbuzz/
@@ -30,9 +29,9 @@ requirements:
     - {{ cdt('libx11-devel') }}          # [linux]
     - {{ cdt('libxrender-devel') }}      # [linux]
     - {{ cdt('xorg-x11-proto-devel') }}  # [linux and s390x]; needed for cairo support
-    - gobject-introspection              # [not win]
+    - gobject-introspection
     - meson
-    - ninja
+    - ninja-base
     - pkg-config
     - pthread-stubs
   host:
@@ -51,29 +50,32 @@ test:
   commands:
     # Libraries/headers.
     {% set libs = [
-        "libharfbuzz-icu",
-        "libharfbuzz"
+        "harfbuzz-icu",
+        "harfbuzz"
         ] %}
     {% for lib in libs %}
-    - test -f $PREFIX/lib/{{ lib }}.dylib  # [osx]
-    - test -f $PREFIX/lib/{{ lib }}.so  # [linux]
+    - test -f $PREFIX/lib/lib{{ lib }}.dylib  # [osx]
+    - test -f $PREFIX/lib/lib{{ lib }}.so  # [linux]
+    - if not exist %PREFIX%\Library\bin\{{ lib }}.dll exit 1 # [win]
     {% endfor %}
     - test -f $PREFIX/include/harfbuzz/hb-ft.h  # [not win]
+    - if not exist %PREFIX%\Library\include\harfbuzz\hb-ft.h exit 1 # [win]
     - test -f $PREFIX/share/gir-1.0/HarfBuzz-0.0.gir  # [not win]
     # CLI tests.
     - hb-view --version  # [linux]
 
 about:
-  home: http://www.freedesktop.org/wiki/Software/HarfBuzz/
+  home: https://harfbuzz.github.io/
   license: MIT
   license_file: COPYING
   license_family: MIT
-  summary: An OpenType text shaping engine.
+  summary: A text shaping library.
   description: |
-    HarfBuzz is a text shaping library. New Harbuzz targets various font
-    technologies while Old HarfBuzz targets only OpenType fonts.
-  doc_url: https://www.freedesktop.org/wiki/Software/HarfBuzz/
-  dev_url: https://github.com/behdad/harfbuzz
+    HarfBuzz is a text shaping library. Using the HarfBuzz library allows 
+    programs to convert a sequence of Unicode input into properly formatted 
+    and positioned glyph output—for any writing system and language.
+  doc_url: https://harfbuzz.github.io/
+  dev_url: https://github.com/harfbuzz/harfbuzz
 
 extra:
   recipe-maintainers:

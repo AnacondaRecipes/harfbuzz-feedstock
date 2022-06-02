@@ -29,25 +29,29 @@ case "${target_platform}" in
         ;;
 esac
 
+# see https://github.com/harfbuzz/harfbuzz/blob/4.3.0/meson_options.txt
 meson setup builddir \
     --buildtype=release \
     --default-library=both \
     --prefix="${PREFIX}" \
+    --wrap-mode=nofallback \
     -Dlibdir=lib \
-    -Dcairo=enabled \
-    -Dfontconfig=enabled \
-    -Dfreetype=enabled \
     -Dglib=enabled \
     -Dgobject=enabled \
-    -Dgraphite=enabled \
+    -Dcairo=enabled \
+    -Dchafa=disabled \
     -Dicu=enabled \
-    -Dgdi=auto \
-    -Dtests=disabled \
+    -Dgraphite=disabled \
+    -Dgraphite2=enabled \
+    -Dfreetype=enabled \
+    -Dgdi=disabled \
+    -Ddirectwrite=disabled \
     -Ddocs=disabled \
-    -Dbenchmark=disabled \
+    -Dtests=enabled \
     ${meson_extra_opts[@]}
 
 ninja -v -C builddir -j ${CPU_COUNT}
+ninja -v -C builddir test
 ninja -C builddir install -j ${CPU_COUNT}
 
 pushd "${PREFIX}"
