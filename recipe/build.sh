@@ -41,7 +41,7 @@ meson setup builddir \
     -Dcairo=enabled \
     -Dchafa=disabled \
     -Dicu=enabled \
-    -Dgraphite=disabled \
+    -Dgraphite=enabled \
     -Dgraphite2=enabled \
     -Dfreetype=enabled \
     -Dgdi=disabled \
