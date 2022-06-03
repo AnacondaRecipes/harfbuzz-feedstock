@@ -32,7 +32,7 @@ requirements:
     - {{ cdt('libx11-devel') }}          # [linux]
     - {{ cdt('libxrender-devel') }}      # [linux]
     - {{ cdt('xorg-x11-proto-devel') }}  # [linux and (s390x or ppc64le or x86_64)]; needed for cairo support
-    - {{ cdt('libxcb') }}                # [linuxand ppc64le]; needed for cairo support
+    - {{ cdt('libxcb') }}                # [linux and ppc64le]; needed for cairo support
     - gobject-introspection
     - meson
     - ninja-base
