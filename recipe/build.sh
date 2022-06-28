@@ -9,7 +9,9 @@ find $PREFIX -name '*.la' -delete
 
 # necessary to ensure the gobject-introspection-1.0 pkg-config file gets found
 # meson needs this to determine where the g-ir-scanner script is located
-export PKG_CONFIG_PATH="${PKG_CONFIG_PATH:-}:${PREFIX}/lib/pkgconfig:$BUILD_PREFIX/$BUILD/sysroot/usr/lib64/pkgconfig:$BUILD_PREFIX/$BUILD/sysroot/usr/share/pkgconfig"
+# ppc64le cdt need to be rebuilt with files in powerpc64le-conda-linux-gnu instead of powerpc64le-conda_cos7-linux-gnu. In the mean time:
+ppc64le_current=$BUILD_PREFIX/powerpc64le-conda_cos7-linux-gnu/sysroot/usr/lib64/pkgconfig:$BUILD_PREFIX/powerpc64le-conda_cos7-linux-gnu/sysroot/usr/share/pkgconfig
+export PKG_CONFIG_PATH=${PKG_CONFIG_PATH:-}:${PREFIX}/lib/pkgconfig:$BUILD_PREFIX/$BUILD/sysroot/usr/lib64/pkgconfig:$BUILD_PREFIX/$BUILD/sysroot/usr/share/pkgconfig:$ppc64le_current
 export PKG_CONFIG=$PREFIX/bin/pkg-config
 declare -a meson_extra_opts
 
