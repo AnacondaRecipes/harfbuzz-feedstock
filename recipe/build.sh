@@ -1,6 +1,11 @@
 #!/bin/bash
 
-set -e
+set -ex
+
+# ppc64le cdt need to be rebuilt with files in powerpc64le-conda-linux-gnu instead of powerpc64le-conda_cos7-linux-gnu. In the meantime:
+if [ "$(uname -m)" = "ppc64le" ]; then
+  cp --force --archive --update --link $BUILD_PREFIX/powerpc64le-conda_cos7-linux-gnu/. $BUILD_PREFIX/powerpc64le-conda-linux-gnu
+fi
 
 # Cf. https://github.com/conda-forge/staged-recipes/issues/673, we're in the
 # process of excising Libtool files from our packages. Existing ones can break
@@ -9,9 +14,7 @@ find $PREFIX -name '*.la' -delete
 
 # necessary to ensure the gobject-introspection-1.0 pkg-config file gets found
 # meson needs this to determine where the g-ir-scanner script is located
-# ppc64le cdt need to be rebuilt with files in powerpc64le-conda-linux-gnu instead of powerpc64le-conda_cos7-linux-gnu. In the mean time:
-ppc64le_current=$BUILD_PREFIX/powerpc64le-conda_cos7-linux-gnu/sysroot/usr/lib64/pkgconfig:$BUILD_PREFIX/powerpc64le-conda_cos7-linux-gnu/sysroot/usr/share/pkgconfig
-export PKG_CONFIG_PATH=${PKG_CONFIG_PATH:-}:${PREFIX}/lib/pkgconfig:$BUILD_PREFIX/$BUILD/sysroot/usr/lib64/pkgconfig:$BUILD_PREFIX/$BUILD/sysroot/usr/share/pkgconfig:$ppc64le_current
+export PKG_CONFIG_PATH=${PKG_CONFIG_PATH:-}:${PREFIX}/lib/pkgconfig:$BUILD_PREFIX/$BUILD/sysroot/usr/lib64/pkgconfig:$BUILD_PREFIX/$BUILD/sysroot/usr/share/pkgconfig
 export PKG_CONFIG=$PREFIX/bin/pkg-config
 declare -a meson_extra_opts
 
