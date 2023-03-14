@@ -45,9 +45,6 @@ if errorlevel 1 (
   exit 1
 )
 
-dir /w src\*
-type src\HarfBuzz-0.0.gir
-
 ninja -v -C builddir -j %CPU_COUNT%
 if errorlevel 1 (
   type src/HarfBuzz-0.0.gir && exit 1
