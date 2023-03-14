@@ -38,6 +38,7 @@ requirements:
     - pthread-stubs
     - m2-patch  # [win]
   host:
+    - pkg-config
     - gobject-introspection
     - cairo 1.16
     - freetype 2.10
