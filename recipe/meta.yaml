@@ -9,15 +9,14 @@ package:
 source:
   url: https://github.com/harfbuzz/harfbuzz/archive/{{ version }}.tar.gz
   sha256: {{ sha256 }}
-
+  patches:               # [win]
+    - fix-win-gir.patch  # [win]
 build:
-  number: 0
+  number: 1
   run_exports:
     # removes symbols rarely (last time in 2014).
     #    https://abi-laboratory.pro/tracker/timeline/harfbuzz/
     - {{ pin_subpackage('harfbuzz') }}
-  ignore_run_exports:
-    - pixman
   missing_dso_whitelist:      # [linux]
     - $RPATH/libm.so.6        # [linux]
     - $RPATH/libc.so.6        # [linux]
@@ -37,10 +36,11 @@ requirements:
     - meson
     - ninja-base
     - pthread-stubs
+    - m2-patch  # [win]
   host:
     - pkg-config
     - gobject-introspection
-    - cairo                              # [not win]
+    - cairo
     - freetype
     - glib
     - icu
