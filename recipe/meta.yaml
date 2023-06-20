@@ -85,5 +85,3 @@ extra:
   recipe-maintainers:
     - ocefpaf
     - pkgw
-  skip-lints:
-    - build_tools_must_be_in_build  # meson needs pkg-config in host section
