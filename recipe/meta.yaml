@@ -42,7 +42,7 @@ requirements:
     - cairo 1.16
     - freetype 2.10
     - glib 2
-    - icu {{ icu }}
+    - icu 73
     - graphite2 1.3.14
   run:
     - cairo                              # [not win]
@@ -75,8 +75,8 @@ about:
   license_family: MIT
   summary: A text shaping library.
   description: |
-    HarfBuzz is a text shaping library. Using the HarfBuzz library allows 
-    programs to convert a sequence of Unicode input into properly formatted 
+    HarfBuzz is a text shaping library. Using the HarfBuzz library allows
+    programs to convert a sequence of Unicode input into properly formatted
     and positioned glyph output—for any writing system and language.
   doc_url: https://harfbuzz.github.io/
   dev_url: https://github.com/harfbuzz/harfbuzz
