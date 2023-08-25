@@ -15,7 +15,6 @@ find $PREFIX -name '*.la' -delete
 # necessary to ensure the gobject-introspection-1.0 pkg-config file gets found
 # meson needs this to determine where the g-ir-scanner script is located
 export PKG_CONFIG_PATH=${PKG_CONFIG_PATH:-}:${PREFIX}/lib/pkgconfig:$BUILD_PREFIX/$BUILD/sysroot/usr/lib64/pkgconfig:$BUILD_PREFIX/$BUILD/sysroot/usr/share/pkgconfig
-export PKG_CONFIG=$PREFIX/bin/pkg-config
 declare -a meson_extra_opts
 
 # conda-forge disables introspection when cross-compiling, but that isn't a
