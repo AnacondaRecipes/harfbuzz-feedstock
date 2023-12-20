@@ -1,26 +1,26 @@
 {% set name = "harfbuzz" %}
-{% set version = "4.3.0" %}
-{% set sha256 = "32184860ddc0b264ff95010e1c64e596bd746fe4c2e34014a1185340cdddeba6" %}
+{% set version = "8.3.0" %}
 
 package:
   name: {{ name }}
   version: {{ version }}
 
 source:
-  url: https://github.com/harfbuzz/harfbuzz/archive/{{ version }}.tar.gz
-  sha256: {{ sha256 }}
+  url: https://github.com/{{ name }}/{{ name }}/archive/{{ version }}.tar.gz
+  sha256: 6a093165442348d99f3307480ea87ed83bdabaf642cdd9548cff6b329e93bfac
   patches:               # [win]
     - fix-win-gir.patch  # [win]
+
 build:
-  number: 2
+  number: 0
   run_exports:
-    # removes symbols rarely (last time in 2014).
-    #    https://abi-laboratory.pro/tracker/timeline/harfbuzz/
-    - {{ pin_subpackage('harfbuzz') }}
-  missing_dso_whitelist:      # [linux]
-    - $RPATH/libm.so.6        # [linux]
-    - $RPATH/libc.so.6        # [linux]
-    - $RPATH/libpthread.so.0  # [linux]
+    # pretty excellent forward compatibility
+    # https://abi-laboratory.pro/index.php?view=timeline&l=harfbuzz
+    - {{ pin_subpackage(name, max_pin='x') }}
+  # missing_dso_whitelist:      # [linux]
+  #   - $RPATH/libm.so.6        # [linux]
+  #   - $RPATH/libc.so.6        # [linux]
+  #   - $RPATH/libpthread.so.0  # [linux]
 
 requirements:
   build:
@@ -39,13 +39,13 @@ requirements:
     - m2-patch  # [win]
   host:
     - gobject-introspection 1.72.0
-    - cairo 1.16
-    - freetype 2.10
-    - glib 2
-    - icu 73
+    - cairo {{ cairo }}
+    - freetype {{ freetype }}
+    - glib {{ glib }}
+    - icu {{ icu }}
     - graphite2 1.3.14
   run:
-    - cairo                              # [not win]
+    - cairo
     - freetype
     - icu
     - graphite2
@@ -54,7 +54,10 @@ test:
   commands:
     # Libraries/headers.
     {% set libs = [
+        "harfbuzz-cairo",
+        "harfbuzz-gobject",
         "harfbuzz-icu",
+        "harfbuzz-subset",
         "harfbuzz"
         ] %}
     {% for lib in libs %}
