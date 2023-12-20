@@ -13,22 +13,24 @@ find $PREFIX -name '*.la' -delete
 export PKG_CONFIG_PATH=${PKG_CONFIG_PATH:-}:${PREFIX}/lib/pkgconfig:$BUILD_PREFIX/$BUILD/sysroot/usr/lib64/pkgconfig:$BUILD_PREFIX/$BUILD/sysroot/usr/share/pkgconfig
 declare -a meson_extra_opts
 
-# conda-forge disables introspection when cross-compiling, but that isn't a
-# concern for defaults.
-meson_extra_opts=(-Dintrospection=enabled)
-
 case "${target_platform}" in
     linux-*)
         # Needed for libxcb when using CDT X11 packages
         #export LDFLAGS="${LDFLAGS} -Wl,-rpath-link,${PREFIX}/lib"
         ;;
     osx-*)
+        # The -dead_strip_dylibs option breaks g-ir-scanner here
+        export LDFLAGS="$(echo $LDFLAGS |sed -e "s/-Wl,-dead_strip_dylibs//g")"
+        export LDFLAGS_LD="$(echo $LDFLAGS_LD |sed -e "s/-dead_strip_dylibs//g")"
+
         meson_extra_opts+=(-Dcoretext=auto)
         ;;
 esac
 
 # see https://github.com/harfbuzz/harfbuzz/blob/4.3.0/meson_options.txt
 meson setup builddir \
+    ${MESON_ARGS} \
+    "${meson_config_args[@]}" \
     --buildtype=release \
     --default-library=both \
     --prefix="${PREFIX}" \
@@ -36,19 +38,21 @@ meson setup builddir \
     --libdir="${PREFIX}/lib" \
     --includedir=${PREFIX}/include \
     --pkg-config-path="${PKG_CONFIG_PATH}" \
-    -Dglib=enabled \
-    -Dgobject=enabled \
+    -Dbenchmark=disabled \
     -Dcairo=enabled \
     -Dchafa=disabled \
-    -Dicu=enabled \
-    -Dgraphite=enabled \
-    -Dgraphite2=enabled \
-    -Dfreetype=enabled \
-    -Dgdi=disabled \
+    -Dcoretext=auto \
     -Ddirectwrite=disabled \
     -Ddocs=disabled \
-    -Dtests=enabled \
-    ${meson_extra_opts[@]}
+    -Dfreetype=enabled \
+    -Dgdi=auto \
+    -Dglib=enabled \
+    -Dgobject=enabled \
+    -Dgraphite=enabled \
+    -Dgraphite2=enabled \
+    -Dicu=enabled \
+    -Dintrospection=enabled \
+    -Dtests=enabled
 
 ninja -v -C builddir -j ${CPU_COUNT}
 ninja -v -C builddir test
