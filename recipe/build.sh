@@ -19,10 +19,6 @@ case "${target_platform}" in
         #export LDFLAGS="${LDFLAGS} -Wl,-rpath-link,${PREFIX}/lib"
         ;;
     osx-*)
-        # The -dead_strip_dylibs option breaks g-ir-scanner here
-        export LDFLAGS="$(echo $LDFLAGS |sed -e "s/-Wl,-dead_strip_dylibs//g")"
-        export LDFLAGS_LD="$(echo $LDFLAGS_LD |sed -e "s/-dead_strip_dylibs//g")"
-
         meson_extra_opts+=(-Dcoretext=auto)
         ;;
 esac
@@ -35,13 +31,12 @@ meson setup builddir \
     --default-library=both \
     --prefix="${PREFIX}" \
     --wrap-mode=nofallback \
-    --libdir="${PREFIX}/lib" \
+    -Dlibdir=lib \
     --includedir=${PREFIX}/include \
     --pkg-config-path="${PKG_CONFIG_PATH}" \
     -Dbenchmark=disabled \
     -Dcairo=enabled \
     -Dchafa=disabled \
-    -Dcoretext=auto \
     -Ddirectwrite=disabled \
     -Ddocs=disabled \
     -Dfreetype=enabled \
