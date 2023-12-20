@@ -28,11 +28,11 @@ meson setup builddir ^
     -Dfreetype=enabled ^
     -Dgdi=enabled ^
     -Ddirectwrite=disabled ^
-    -Dcoretext=disabled ^
+    -Dcoretext=auto ^
     -Ddocs=disabled ^
     -Dtests=enabled ^
-	-Dbenchmark=disabled ^
-	-Dintrospection=enabled
+    -Dbenchmark=disabled ^
+    -Dintrospection=enabled
 if errorlevel 1 (
   type src/HarfBuzz-0.0.gir
   exit 1

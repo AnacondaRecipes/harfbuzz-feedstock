@@ -2,10 +2,6 @@
 
 set -ex
 
-# ppc64le cdt need to be rebuilt with files in powerpc64le-conda-linux-gnu instead of powerpc64le-conda_cos7-linux-gnu. In the meantime:
-if [ "$(uname -m)" = "ppc64le" ]; then
-  cp --force --archive --update --link $BUILD_PREFIX/powerpc64le-conda_cos7-linux-gnu/. $BUILD_PREFIX/powerpc64le-conda-linux-gnu
-fi
 
 # Cf. https://github.com/conda-forge/staged-recipes/issues/673, we're in the
 # process of excising Libtool files from our packages. Existing ones can break
@@ -16,10 +12,6 @@ find $PREFIX -name '*.la' -delete
 # meson needs this to determine where the g-ir-scanner script is located
 export PKG_CONFIG_PATH=${PKG_CONFIG_PATH:-}:${PREFIX}/lib/pkgconfig:$BUILD_PREFIX/$BUILD/sysroot/usr/lib64/pkgconfig:$BUILD_PREFIX/$BUILD/sysroot/usr/share/pkgconfig
 declare -a meson_extra_opts
-
-# conda-forge disables introspection when cross-compiling, but that isn't a
-# concern for defaults.
-meson_extra_opts=(-Dintrospection=enabled)
 
 case "${target_platform}" in
     linux-*)
@@ -33,26 +25,29 @@ esac
 
 # see https://github.com/harfbuzz/harfbuzz/blob/4.3.0/meson_options.txt
 meson setup builddir \
+    ${MESON_ARGS} \
+    "${meson_config_args[@]}" \
     --buildtype=release \
     --default-library=both \
     --prefix="${PREFIX}" \
     --wrap-mode=nofallback \
-    --libdir="${PREFIX}/lib" \
+    -Dlibdir=lib \
     --includedir=${PREFIX}/include \
     --pkg-config-path="${PKG_CONFIG_PATH}" \
-    -Dglib=enabled \
-    -Dgobject=enabled \
+    -Dbenchmark=disabled \
     -Dcairo=enabled \
     -Dchafa=disabled \
-    -Dicu=enabled \
-    -Dgraphite=enabled \
-    -Dgraphite2=enabled \
-    -Dfreetype=enabled \
-    -Dgdi=disabled \
     -Ddirectwrite=disabled \
     -Ddocs=disabled \
-    -Dtests=enabled \
-    ${meson_extra_opts[@]}
+    -Dfreetype=enabled \
+    -Dgdi=auto \
+    -Dglib=enabled \
+    -Dgobject=enabled \
+    -Dgraphite=enabled \
+    -Dgraphite2=enabled \
+    -Dicu=enabled \
+    -Dintrospection=enabled \
+    -Dtests=enabled
 
 ninja -v -C builddir -j ${CPU_COUNT}
 ninja -v -C builddir test
