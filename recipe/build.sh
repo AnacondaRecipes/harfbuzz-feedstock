@@ -59,7 +59,7 @@ meson setup builddir \
     -Dgdi=disabled \
     -Dglib=enabled \
     -Dgobject=enabled \
-    -Dgraphite=disabled \
+    -Dgraphite=enabled \
     -Dgraphite2=enabled \
     -Dicu=enabled \
     -Dintrospection=enabled \
