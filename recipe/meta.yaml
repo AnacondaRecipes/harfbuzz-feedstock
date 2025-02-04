@@ -26,10 +26,6 @@ requirements:
   build:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-    - {{ cdt('libxau-devel') }}          # [linux]
-    - {{ cdt('libxext-devel') }}         # [linux]
-    - {{ cdt('libx11-devel') }}          # [linux]
-    - {{ cdt('libxrender-devel') }}      # [linux]
     - {{ cdt('xorg-x11-proto-devel') }}  # [linux and (s390x or ppc64le or x86_64)]; needed for cairo support
     - pkg-config
     - gobject-introspection
