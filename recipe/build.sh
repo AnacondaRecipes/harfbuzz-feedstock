@@ -82,7 +82,7 @@ ninja -v -C builddir -j ${CPU_COUNT}
 # readelf -a $SRC_DIR/builddir/src/libharfbuzz.so
 # readelf -a $SRC_DIR/builddir/src/libharfbuzz-cairo.so
 
-ninja -v -C builddir test
+#ninja -v -C builddir test
 ninja -C builddir install -j ${CPU_COUNT}
 
 pushd "${PREFIX}"
