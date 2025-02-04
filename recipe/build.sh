@@ -12,7 +12,7 @@ fi
 # the build while this happens.
 find $PREFIX -name '*.la' -delete
 
-if [ "${UNAME}" == "Linux" ]; then
+if [ "$(uname)" == "Linux" ]; then
 	export CXXFLAGS="${CXXFLAGS//-std=c++17/-std=c++11}"
 fi
 
