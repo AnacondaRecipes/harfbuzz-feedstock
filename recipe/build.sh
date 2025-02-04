@@ -15,6 +15,16 @@ find $PREFIX -name '*.la' -delete
 # necessary to ensure the gobject-introspection-1.0 pkg-config file gets found
 # meson needs this to determine where the g-ir-scanner script is located
 export PKG_CONFIG_PATH=${PKG_CONFIG_PATH:-}:${PREFIX}/lib/pkgconfig:$BUILD_PREFIX/$BUILD/sysroot/usr/lib64/pkgconfig:$BUILD_PREFIX/$BUILD/sysroot/usr/share/pkgconfig
+
+# Make sure .gir files in $PREFIX are found
+export XDG_DATA_DIRS=${XDG_DATA_DIRS}:$PREFIX/share:$BUILD_PREFIX/share
+
+if [ -n "$OSX_ARCH" ] ; then
+    # The -dead_strip_dylibs option breaks g-ir-scanner here
+    export LDFLAGS="$(echo $LDFLAGS |sed -e "s/-Wl,-dead_strip_dylibs//g")"
+    export LDFLAGS_LD="$(echo $LDFLAGS_LD |sed -e "s/-dead_strip_dylibs//g")"
+fi
+
 declare -a meson_extra_opts
 
 # conda-forge disables introspection when cross-compiling, but that isn't a
@@ -40,19 +50,21 @@ meson setup builddir \
     --libdir="${PREFIX}/lib" \
     --includedir=${PREFIX}/include \
     --pkg-config-path="${PKG_CONFIG_PATH}" \
-    -Dglib=enabled \
-    -Dgobject=enabled \
+    -Dbenchmark=disabled \
     -Dcairo=enabled \
     -Dchafa=disabled \
-    -Dicu=enabled \
-    -Dgraphite=enabled \
-    -Dgraphite2=enabled \
-    -Dfreetype=enabled \
-    -Dgdi=disabled \
     -Ddirectwrite=disabled \
     -Ddocs=disabled \
+    -Dfreetype=enabled \
+    -Dgdi=disabled \
+    -Dglib=enabled \
+    -Dgobject=enabled \
+    -Dgraphite=disabled \
+    -Dgraphite2=enabled \
+    -Dicu=enabled \
+    -Dintrospection=enabled \
     -Dtests=enabled \
-    ${meson_extra_opts[@]}
+    "${meson_extra_opts[@]}"
 
 ninja -v -C builddir -j ${CPU_COUNT}
 ninja -v -C builddir test

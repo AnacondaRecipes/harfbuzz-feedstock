@@ -18,21 +18,21 @@ meson setup builddir ^
 	--buildtype=release ^
 	--prefix=%LIBRARY_PREFIX_M% ^
 	--backend=ninja ^
-    -Dglib=enabled ^
-    -Dgobject=enabled ^
-    -Dcairo=enabled ^
-    -Dchafa=disabled ^
-    -Dicu=enabled ^
-    -Dgraphite=enabled ^
-    -Dgraphite2=enabled ^
-    -Dfreetype=enabled ^
-    -Dgdi=enabled ^
-    -Ddirectwrite=disabled ^
-    -Dcoretext=disabled ^
-    -Ddocs=disabled ^
-    -Dtests=enabled ^
-	-Dbenchmark=disabled ^
-	-Dintrospection=enabled
+  -Dbenchmark=disabled ^
+  -Dintrospection=enabled ^
+  -Dcairo=enabled ^
+  -Dchafa=disabled ^
+  -Dcoretext=disabled ^
+  -Ddirectwrite=disabled ^
+  -Ddocs=disabled ^
+  -Dfreetype=enabled ^
+  -Dgdi=enabled ^
+  -Dglib=enabled ^
+  -Dgobject=enabled ^
+  -Dgraphite=disabled ^
+  -Dgraphite2=enabled ^
+  -Dicu=enabled ^
+  -Dtests=enabled
 if errorlevel 1 (
   type src/HarfBuzz-0.0.gir
   exit 1
