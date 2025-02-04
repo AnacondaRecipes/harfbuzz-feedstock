@@ -9,8 +9,9 @@ package:
 source:
   url: https://github.com/harfbuzz/harfbuzz/archive/{{ version }}.tar.gz
   sha256: {{ sha256 }}
-  patches:               # [win]
-    - fix-win-gir.patch  # [win]
+  patches:                          # [win or linux]
+    - fix-win-gir.patch             # [win]
+    - disable-check-libstdxx.patch  # [linux]
 build:
   number: 0
   run_exports:
@@ -21,7 +22,8 @@ build:
 requirements:
   build:
     - {{ compiler('c') }}
-    #- {{ compiler('cxx') }}
+    - {{ compiler('cxx') }}
+    # CTDs are required for cairo support
     - {{ cdt('libxau-devel') }}          # [linux]
     - {{ cdt('libxext-devel') }}         # [linux]
     - {{ cdt('libx11-devel') }}          # [linux]
@@ -51,8 +53,8 @@ test:
     # Libraries/headers.
     {% set libs = ["harfbuzz-cairo", "harfbuzz-gobject", "harfbuzz-icu", "harfbuzz-subset", "harfbuzz"] %}
     {% for lib in libs %}
-    - test -f $PREFIX/lib/lib{{ lib }}.dylib                         # [osx]
-    - test -f $PREFIX/lib/lib{{ lib }}.so                            # [linux]
+    - test -f $PREFIX/lib/lib{{ lib }}${SHLIB_EXT}                   # [unix]
+    - test -f $PREFIX/lib/pkgconfig/{{ lib }}.pc                     # [unix]
     - if not exist %PREFIX%\Library\bin\{{ lib }}.dll exit 1         # [win]
     {% endfor %}
     - test -f $PREFIX/include/harfbuzz/hb-ft.h                       # [not win]
