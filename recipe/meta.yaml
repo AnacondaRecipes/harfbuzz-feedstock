@@ -17,10 +17,6 @@ build:
     # pretty excellent forward compatibility
     # https://abi-laboratory.pro/index.php?view=timeline&l=harfbuzz
     - {{ pin_subpackage(name, max_pin='x') }}
-  missing_dso_whitelist:      # [linux]
-    - $RPATH/libm.so.6        # [linux]
-    - $RPATH/libc.so.6        # [linux]
-    - $RPATH/libpthread.so.0  # [linux]
 
 requirements:
   build:

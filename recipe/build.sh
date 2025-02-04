@@ -68,6 +68,16 @@ meson setup builddir \
 
 ninja -v -C builddir -j ${CPU_COUNT}
 # Debugging
+# 2025-02-04T12:40:32.449927+00:00  | INFO     |     Tag        Type                         Name/Value
+# 2025-02-04T12:40:32.451054+00:00  | INFO     |    0x0000000000000001 (NEEDED)             Shared library: [libharfbuzz.so.0]
+# 2025-02-04T12:40:32.452195+00:00  | INFO     |    0x0000000000000001 (NEEDED)             Shared library: [libm.so.6]
+# 2025-02-04T12:40:32.453341+00:00  | INFO     |    0x0000000000000001 (NEEDED)             Shared library: [libcairo.so.2]
+# 2025-02-04T12:40:32.454479+00:00  | INFO     |    0x0000000000000001 (NEEDED)             Shared library: [libc.so.6]
+# 2025-02-04T12:40:32.455615+00:00  | INFO     |    0x000000000000000e (SONAME)             Library soname: [libharfbuzz-cairo.so.0]
+readelf -a $SRC_DIR/builddir/src/libharfbuzz.so
+readelf -a $SRC_DIR/builddir/src/libm.so
+readelf -a $SRC_DIR/builddir/src/libcairo.so
+readelf -a $SRC_DIR/builddir/src/libc.so
 readelf -a $SRC_DIR/builddir/src/libharfbuzz-cairo.so
 
 ninja -v -C builddir test
