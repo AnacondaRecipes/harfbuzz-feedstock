@@ -12,6 +12,11 @@ fi
 # the build while this happens.
 find $PREFIX -name '*.la' -delete
 
+if [ "${UNAME}" == "Linux" ]; then
+	export CXXFLAGS="${CXXFLAGS//-std=c++17/-std=c++11}"
+fi
+
+
 # necessary to ensure the gobject-introspection-1.0 pkg-config file gets found
 # meson needs this to determine where the g-ir-scanner script is located
 export PKG_CONFIG_PATH=${PKG_CONFIG_PATH:-}:${PREFIX}/lib/pkgconfig:$BUILD_PREFIX/$BUILD/sysroot/usr/lib64/pkgconfig:$BUILD_PREFIX/$BUILD/sysroot/usr/share/pkgconfig
