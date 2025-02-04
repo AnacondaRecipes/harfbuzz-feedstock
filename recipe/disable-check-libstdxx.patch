@@ -16,7 +16,7 @@ index b9daabf01..403dfffb0 100644
      dist_check_script += ['check-static-inits', 'check-symbols']
      if get_option('wasm').disabled() and not get_option('with_libstdcxx')
 -      dist_check_script += ['check-libstdc++']
-+      dist_check_script += ['']
++      #dist_check_script += ['check-libstdc++']
      endif
    endif
  
