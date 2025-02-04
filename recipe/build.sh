@@ -67,6 +67,9 @@ meson setup builddir \
     "${meson_extra_opts[@]}"
 
 ninja -v -C builddir -j ${CPU_COUNT}
+# Debugging
+readelf -a libharfbuzz-cairo.so
+
 ninja -v -C builddir test
 ninja -C builddir install -j ${CPU_COUNT}
 
