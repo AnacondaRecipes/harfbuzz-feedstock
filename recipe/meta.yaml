@@ -11,6 +11,10 @@ source:
   sha256: {{ sha256 }}
   patches:                          # [win or linux]
     - fix-win-gir.patch             # [win]
+    # check-libstdc++.py fails on linux with a message
+    # 'Ouch, $SRC_DIR/builddir/src/libharfbuzz-cairo.so is linked to libstdc++ or libc++',
+    # but checking by 'readelf -a $SRC_DIR/builddir/src/libharfbuzz-cairo.so' it was verified
+    # that there are no linking to ibstdc++ or libc++. So skipping the test.
     - disable-check-libstdxx.patch  # [linux]
 build:
   number: 0
@@ -35,6 +39,7 @@ requirements:
     - ninja-base
     - pthread-stubs
     - m2-patch  # [win]
+    - patch     # [linux]
   host:
     - gobject-introspection 1.78.1
     - cairo {{ cairo }}
