@@ -17,7 +17,7 @@ source:
     # that there are no linking to ibstdc++ or libc++. So skipping the test.
     - disable-check-libstdxx.patch  # [linux]
 build:
-  number: 0
+  number: 1
   run_exports:
     # pretty excellent forward compatibility
     # https://abi-laboratory.pro/index.php?view=timeline&l=harfbuzz
@@ -42,11 +42,11 @@ requirements:
     - glib {{ glib }}
     - icu {{ icu }}
     - graphite2 1.3.14
-    - xorg-libxau
-    - xorg-libxext
-    - xorg-libx11
-    - xorg-libxrender
-    - xorg-xproto
+    - xorg-libxau  # [linux]
+    - xorg-libxext  # [linux]
+    - xorg-libx11  # [linux]
+    - xorg-libxrender  # [linux]
+    - xorg-xorgproto  # [linux]
   run:
     - cairo                              # [not win]
     - freetype
