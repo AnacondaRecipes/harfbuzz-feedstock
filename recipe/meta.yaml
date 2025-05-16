@@ -27,7 +27,6 @@ requirements:
   build:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-    # CTDs are required for cairo support
     - pkg-config
     - gobject-introspection
     - meson
@@ -42,10 +41,6 @@ requirements:
     - glib {{ glib }}
     - icu {{ icu }}
     - graphite2 1.3.14
-    - xorg-libxau  # [linux]
-    - xorg-libxext  # [linux]
-    - xorg-libx11  # [linux]
-    - xorg-libxrender  # [linux]
     - xorg-xorgproto  # [linux]
   run:
     - cairo                              # [not win]
