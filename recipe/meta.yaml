@@ -36,17 +36,12 @@ requirements:
     - patch     # [linux]
   host:
     - gobject-introspection 1.78.1
+    # xorg/xcb/x11 packages come through cairo.
     - cairo {{ cairo }}
     - freetype {{ freetype }}
     - glib {{ glib }}
     - icu {{ icu }}
-    - graphite2 1.3.14
-    # # xorg/xcb packages are needed for cairo support.
-    # - xorg-libxau  # [linux]
-    # - xorg-libxext  # [linux]
-    # - xorg-libx11  # [linux]
-    # - xorg-libxrender  # [linux]
-    # - xorg-xorgproto  # [linux]
+    - graphite2 {{ graphite2 }}
   run:
     - cairo                              # [not win]
     - freetype
