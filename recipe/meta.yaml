@@ -1,6 +1,5 @@
 {% set name = "harfbuzz" %}
-{% set version = "10.2.0" %}
-{% set sha256 = "11749926914fd488e08e744538f19329332487a6243eec39ef3c63efa154a578" %}
+{% set version = "12.3.0" %}
 
 package:
   name: {{ name }}
@@ -8,16 +7,13 @@ package:
 
 source:
   url: https://github.com/harfbuzz/harfbuzz/archive/{{ version }}.tar.gz
-  sha256: {{ sha256 }}
-  patches:                          # [win or linux]
-    - fix-win-gir.patch             # [win]
-    # check-libstdc++.py fails on linux with a message
-    # 'Ouch, $SRC_DIR/builddir/src/libharfbuzz-cairo.so is linked to libstdc++ or libc++',
-    # but checking by 'readelf -a $SRC_DIR/builddir/src/libharfbuzz-cairo.so' it was verified
-    # that there are no linking to ibstdc++ or libc++. So skipping the test.
-    - disable-check-libstdxx.patch  # [linux]
+  sha256: e93af4816128fc0a02d2e84106fdfe36a3fde01086b723be8f0656a65562ca9e
+  patches:
+    - gir-windows.patch  # [win]
+    - createfontdescriptors.patch  # [osx]
+
 build:
-  number: 1
+  number: 0
   run_exports:
     # pretty excellent forward compatibility
     # https://abi-laboratory.pro/index.php?view=timeline&l=harfbuzz
@@ -25,27 +21,26 @@ build:
 
 requirements:
   build:
-    - {{ compiler('c') }}
-    - {{ compiler('cxx') }}
-    - pkg-config
+    - {{ stdlib("c") }}
+    - {{ compiler("c") }}
+    - {{ compiler("cxx") }}
     - gobject-introspection
+    # Newer version glib have no GObject-2.0.gir, so that we link to older one
+    - glib <2.84
     - meson
     - ninja-base
+    - pkg-config
     - pthread-stubs
-    - m2-patch  # [win]
-    - patch     # [linux]
   host:
-    - gobject-introspection 1.78.1
-    # xorg/xcb/x11 packages come through cairo.
     - cairo {{ cairo }}
+    # Newer version glib have no GObject-2.0.gir, so that we link to older one
+    - glib <2.84
     - freetype {{ freetype }}
-    - glib {{ glib }}
     - icu {{ icu }}
     - graphite2 {{ graphite2 }}
   run:
-    - cairo                              # [not win]
-    - freetype
-    - icu
+    # Still doesn't have run export as of 2025/07/26
+    # https://github.com/conda-forge/graphite2-feedstock/pull/19
     - graphite2
 
 test:
@@ -53,32 +48,32 @@ test:
     # Libraries/headers.
     {% set libs = ["harfbuzz-cairo", "harfbuzz-gobject", "harfbuzz-icu", "harfbuzz-subset", "harfbuzz"] %}
     {% for lib in libs %}
-    - test -f $PREFIX/lib/lib{{ lib }}${SHLIB_EXT}                   # [unix]
-    - test -f $PREFIX/lib/pkgconfig/{{ lib }}.pc                     # [unix]
-    - if not exist %PREFIX%\Library\bin\{{ lib }}.dll exit 1         # [win]
+    - test -f $PREFIX/lib/lib{{ lib }}${SHLIB_EXT}    # [unix]
+    - if not exist %PREFIX%\Library\bin\{{ lib }}.dll exit 1       # [win]
     {% endfor %}
-    - test -f $PREFIX/include/harfbuzz/hb-ft.h                       # [not win]
-    - if not exist %PREFIX%\Library\include\harfbuzz\hb-ft.h exit 1  # [win]
-    - test -f $PREFIX/lib/girepository-1.0/HarfBuzz-0.0.typelib      # [unix]
-    - if not exist %PREFIX%\Library\lib\girepository-1.0\HarfBuzz-0.0.typelib exit 1  # [win]
+    - test -f $PREFIX/include/harfbuzz/hb-ft.h    # [not win]
+    - if not exist %PREFIX%\Library\include\harfbuzz\hb-ft.h exit 1         # [win]
+    - test -f $PREFIX/lib/girepository-1.0/HarfBuzz-0.0.typelib    # [unix]
+    - if not exist %PREFIX%\Library\lib\girepository-1.0\HarfBuzz-0.0.typelib exit 1         # [win]
     - test -f $PREFIX/share/gir-1.0/HarfBuzz-0.0.gir                 # [not win]
     # CLI tests.
     - hb-view --version  # [linux]
 
 about:
-  home: https://harfbuzz.github.io/
+  home: https://harfbuzz.github.io
   license: MIT
   license_file: COPYING
   license_family: MIT
-  summary: A text shaping library.
+  summary: An OpenType text shaping engine.
   description: |
     HarfBuzz is a text shaping library. Using the HarfBuzz library allows
     programs to convert a sequence of Unicode input into properly formatted
     and positioned glyph output—for any writing system and language.
-  doc_url: https://harfbuzz.github.io/
+  doc_url: https://harfbuzz.github.io
   dev_url: https://github.com/harfbuzz/harfbuzz
 
 extra:
   recipe-maintainers:
     - ocefpaf
     - pkgw
+    - tschoonj
