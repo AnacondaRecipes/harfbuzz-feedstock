@@ -13,7 +13,7 @@ source:
     - createfontdescriptors.patch  # [osx]
 
 build:
-  number: 0
+  number: 1
   run_exports:
     # pretty excellent forward compatibility
     # https://abi-laboratory.pro/index.php?view=timeline&l=harfbuzz
@@ -26,7 +26,7 @@ requirements:
     - {{ compiler("cxx") }}
     - gobject-introspection
     # Newer version glib have no GObject-2.0.gir, so that we link to older one
-    - glib <2.84
+    - glib
     - meson
     - ninja-base
     - pkg-config
@@ -34,7 +34,7 @@ requirements:
   host:
     - cairo {{ cairo }}
     # Newer version glib have no GObject-2.0.gir, so that we link to older one
-    - glib <2.84
+    - glib
     - freetype {{ freetype }}
     - icu {{ icu }}
     - graphite2 {{ graphite2 }}
