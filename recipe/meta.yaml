@@ -25,14 +25,14 @@ requirements:
     - {{ compiler("c") }}
     - {{ compiler("cxx") }}
     - gobject-introspection
-    - glib
+    - glib {{ glib }}
     - meson
     - ninja-base
     - pkg-config
     - pthread-stubs
   host:
     - cairo {{ cairo }}
-    - glib
+    - glib {{ glib }}
     - freetype {{ freetype }}
     - icu {{ icu }}
     - graphite2 {{ graphite2 }}
