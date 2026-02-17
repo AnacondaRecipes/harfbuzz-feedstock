@@ -1,67 +1,72 @@
-{% set name = "harfbuzz" %}
-{% set version = "10.2.0" %}
-{% set sha256 = "11749926914fd488e08e744538f19329332487a6243eec39ef3c63efa154a578" %}
+{% set version = "12.3.2" %}
 
 package:
-  name: {{ name }}
+  name: harfbuzz
   version: {{ version }}
 
 source:
   url: https://github.com/harfbuzz/harfbuzz/archive/{{ version }}.tar.gz
-  sha256: {{ sha256 }}
-  patches:                          # [win or linux]
-    - fix-win-gir.patch             # [win]
-    # check-libstdc++.py fails on linux with a message
-    # 'Ouch, $SRC_DIR/builddir/src/libharfbuzz-cairo.so is linked to libstdc++ or libc++',
-    # but checking by 'readelf -a $SRC_DIR/builddir/src/libharfbuzz-cairo.so' it was verified
-    # that there are no linking to ibstdc++ or libc++. So skipping the test.
-    - disable-check-libstdxx.patch  # [linux]
+  sha256: 3ca6621821e19266710ec1a0cb6146fdc832a75828f7c55fea5502c2a810c3c8
+  patches:
+    - gir-windows.patch  # [win]
+    - createfontdescriptors.patch  # [osx]
+
 build:
-  number: 1
+  number: 0
   run_exports:
-    # pretty excellent forward compatibility
-    # https://abi-laboratory.pro/index.php?view=timeline&l=harfbuzz
-    - {{ pin_subpackage(name, max_pin='x') }}
+    # "We will never break the ABI."
+    # https://github.com/conda-forge/harfbuzz-feedstock/issues/123
+    # https://github.com/harfbuzz/harfbuzz/discussions/5245#discussioncomment-12728609
+    - harfbuzz >={{ version }}
 
 requirements:
   build:
-    - {{ compiler('c') }}
-    - {{ compiler('cxx') }}
-    - pkg-config
     - gobject-introspection
     - meson
-    - ninja-base
+    - ninja
+    - pkg-config
     - pthread-stubs
-    - m2-patch  # [win]
-    - patch     # [linux]
+    - {{ compiler("c") }}
+    - {{ stdlib("c") }}
+    - {{ compiler("cxx") }}
+    - cairo           # [build_platform != target_platform]
+    - glib            # [build_platform != target_platform]
+    - freetype        # [build_platform != target_platform]
+    - icu             # [build_platform != target_platform]
+    - graphite2       # [build_platform != target_platform]
+    # needed for development files:
+    - expat           # [build_platform != target_platform]
+    - xorg-xorgproto  # [build_platform != target_platform]
+    - zlib            # [build_platform != target_platform]
   host:
-    - gobject-introspection 1.78.1
-    # xorg/xcb/x11 packages come through cairo.
-    - cairo {{ cairo }}
-    - freetype {{ freetype }}
-    - glib {{ glib }}
-    - icu {{ icu }}
-    - graphite2 {{ graphite2 }}
-  run:
-    - cairo                              # [not win]
+    - cairo
+    - glib
     - freetype
     - icu
     - graphite2
+    # needed for development files:
+    - expat
+    - xorg-xorgproto
+    - zlib
+  run:
+    # Still doesn't have run export as of 2025/07/26
+    # https://github.com/conda-forge/graphite2-feedstock/pull/19
+    - graphite2
 
 test:
+  requires:
+    - pygobject
   commands:
     # Libraries/headers.
     {% set libs = ["harfbuzz-cairo", "harfbuzz-gobject", "harfbuzz-icu", "harfbuzz-subset", "harfbuzz"] %}
     {% for lib in libs %}
-    - test -f $PREFIX/lib/lib{{ lib }}${SHLIB_EXT}                   # [unix]
-    - test -f $PREFIX/lib/pkgconfig/{{ lib }}.pc                     # [unix]
-    - if not exist %PREFIX%\Library\bin\{{ lib }}.dll exit 1         # [win]
+    - test -f $PREFIX/lib/lib{{ lib }}${SHLIB_EXT}    # [unix]
+    - if not exist %PREFIX%\Library\bin\{{ lib }}.dll exit 1       # [win]
     {% endfor %}
-    - test -f $PREFIX/include/harfbuzz/hb-ft.h                       # [not win]
-    - if not exist %PREFIX%\Library\include\harfbuzz\hb-ft.h exit 1  # [win]
-    - test -f $PREFIX/lib/girepository-1.0/HarfBuzz-0.0.typelib      # [unix]
-    - if not exist %PREFIX%\Library\lib\girepository-1.0\HarfBuzz-0.0.typelib exit 1  # [win]
-    - test -f $PREFIX/share/gir-1.0/HarfBuzz-0.0.gir                 # [not win]
+    - test -f $PREFIX/include/harfbuzz/hb-ft.h    # [not win]
+    - if not exist %PREFIX%\Library\include\harfbuzz\hb-ft.h exit 1         # [win]
+    - test -f $PREFIX/lib/girepository-1.0/HarfBuzz-0.0.typelib    # [unix]
+    - if not exist %PREFIX%\Library\lib\girepository-1.0\HarfBuzz-0.0.typelib exit 1         # [win]
     # CLI tests.
     - hb-view --version  # [linux]
 
@@ -69,12 +74,10 @@ about:
   home: https://harfbuzz.github.io/
   license: MIT
   license_file: COPYING
-  license_family: MIT
-  summary: A text shaping library.
+  summary: An OpenType text shaping engine.
   description: |
-    HarfBuzz is a text shaping library. Using the HarfBuzz library allows
-    programs to convert a sequence of Unicode input into properly formatted
-    and positioned glyph output—for any writing system and language.
+    HarfBuzz is a text shaping library. New Harbuzz targets various font
+    technologies while Old HarfBuzz targets only OpenType fonts.
   doc_url: https://harfbuzz.github.io/
   dev_url: https://github.com/harfbuzz/harfbuzz
 
@@ -82,3 +85,4 @@ extra:
   recipe-maintainers:
     - ocefpaf
     - pkgw
+    - tschoonj
