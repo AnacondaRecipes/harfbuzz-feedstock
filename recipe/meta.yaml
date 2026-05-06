@@ -13,7 +13,7 @@ source:
     - createfontdescriptors.patch  # [osx]
 
 build:
-  number: 1
+  number: 2
   run_exports:
     # pretty excellent forward compatibility
     # https://abi-laboratory.pro/index.php?view=timeline&l=harfbuzz
