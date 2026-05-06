@@ -2,3 +2,7 @@ c_compiler:                    # [win]
 - vs2019                       # [win]
 cxx_compiler:                  # [win]
 - vs2019                       # [win]
+
+# rebuild for icu 78.3
+icu:
+  - 78.3
